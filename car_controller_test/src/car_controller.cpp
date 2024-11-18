@@ -158,7 +158,12 @@ void chatterCallback(const geometry_msgs::Twist &msg)//获取键盘控制的回�
 
 			        }//右斜下
   
-   if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle==0){}
+   if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle==0){
+        speed_B = 0;
+        speed_A = 0;
+        speed_D = 0;
+        speed_C = 0;
+   }
    else Flag_start=1,FLAG_USART=5;
 							
 }
@@ -368,7 +373,7 @@ int main(int argc, char **argv){
 							          /*<11>*/Data_US[10] = 0 ;//预留位 
 							          /*<12>*/Data_US[11] = 0 ;//预留位				 
                      if(FLAG_USART>0)FLAG_USART--;
-				             if(FLAG_USART==0){Data_US[1]=0;Data_US[2]=0;Data_US[3]=0;Data_US[4]=0;}
+				            //  if(FLAG_USART==0){Data_US[1]=0;Data_US[2]=0;Data_US[3]=0;Data_US[4]=0;}
 
                      send_data(); //发送指令控制电机运行				             			
 		    }
