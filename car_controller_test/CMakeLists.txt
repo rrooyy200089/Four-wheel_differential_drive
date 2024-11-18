@@ -24,6 +24,10 @@ add_executable(car_listener src/car_listener.cpp)
 target_link_libraries(car_listener ${catkin_LIBRARIES})
 add_dependencies(car_listener car_controller_test_generate_messages_cpp)
 
+add_executable(tttt src/tttt.cpp)
+target_link_libraries(tttt ${catkin_LIBRARIES})
+add_dependencies(tttt car_controller_test_generate_messages_cpp)
+
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
