@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(car_controller_test)
+project(four_wheel_car_controller)
 
 
 
@@ -18,15 +18,15 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(car_controller src/car_controller.cpp)
 target_link_libraries(car_controller ${catkin_LIBRARIES})
-add_dependencies(car_controller car_controller_test_generate_messages_cpp)
+add_dependencies(car_controller four_wheel_car_controller_generate_messages_cpp)
 
 add_executable(car_listener src/car_listener.cpp)
 target_link_libraries(car_listener ${catkin_LIBRARIES})
-add_dependencies(car_listener car_controller_test_generate_messages_cpp)
+add_dependencies(car_listener four_wheel_car_controller_generate_messages_cpp)
 
 add_executable(tttt src/tttt.cpp)
 target_link_libraries(tttt ${catkin_LIBRARIES})
-add_dependencies(tttt car_controller_test_generate_messages_cpp)
+add_dependencies(tttt four_wheel_car_controller_generate_messages_cpp)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
