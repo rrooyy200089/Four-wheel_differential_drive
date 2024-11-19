@@ -8,6 +8,8 @@
 #include "geometry_msgs/Twist.h"
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
+#include <string>
+using namespace std;
 //创建一个serial类
 serial::Serial sp;
 
@@ -32,6 +34,8 @@ void send_data(void);//串口发送协议函数
 
 // ros::Time last_cmdvelcb_time;
 bool new_message_received = false;
+int rate;
+string topic_odom, topic_cmd_vel;
 
 typedef unsigned char byte;
 float b2f(byte m0, byte m1, byte m2, byte m3)//float 型解算为4个字节
@@ -185,13 +189,17 @@ int main(int argc, char **argv){
 
     ros::init(argc, argv, "listener");
 
-    ros::NodeHandle np;//为这个进程的节点创建一个句柄
+    ros::NodeHandle np, private_np("~");//为这个进程的节点创建一个句柄
 
-    ros::Subscriber sub = np.subscribe("cmd_vel",1000, chatterCallback);//订阅键盘控制
+    private_np.param<int>("rate", rate, 200);
+    private_np.param<string>("topic_cmd_vel", topic_cmd_vel, "cmd_vel");
+    private_np.param<string>("topic_odom", topic_odom, "odom");
+
+    ros::Subscriber sub = np.subscribe(topic_cmd_vel, 1000, chatterCallback);//订阅键盘控制
 
     ros::init(argc, argv, "odometry_publisher");
     ros::NodeHandle n;
-    ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
+    ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>(topic_odom, 50);
 
     tf::TransformBroadcaster odom_broadcaster;
 
@@ -257,7 +265,7 @@ int main(int argc, char **argv){
       ros::Duration(0.1).sleep(); //
     }		
 
-   ros::Rate loop_rate(50);//设置循环间隔，即代码执行频率 200 HZ
+   ros::Rate loop_rate(rate);//设置循环间隔，即代码执行频率 200 HZ
 
    while(ros::ok())
    {
@@ -319,7 +327,7 @@ int main(int argc, char **argv){
 
       odom_trans.header.stamp = current_time;
 
-      odom_trans.header.frame_id = "odom";
+      odom_trans.header.frame_id = topic_odom;
 
       odom_trans.child_frame_id = "base_link";
 
@@ -343,7 +351,7 @@ int main(int argc, char **argv){
 
        odom.header.stamp = current_time;
 
-       odom.header.frame_id = "odom";
+       odom.header.frame_id = topic_odom;
 
        //设置位置
        odom.pose.pose.position.x = x;
@@ -468,7 +476,7 @@ int main(int argc, char **argv){
 			/*<14>*///Data_UR[14]; //预留
 
 		  count_1++;
-                  if(count_1>10){//显示频率降低为10HZ
+                  if(count_1>3){//显示频率降低为10HZ
                       count_1=0;
                       if((uint8_t)Data_UR[0]==1){
                           ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: ON");}//下位机电机启动/停止标志，1启动，0停止
