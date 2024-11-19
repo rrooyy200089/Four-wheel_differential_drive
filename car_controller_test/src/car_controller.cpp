@@ -30,7 +30,7 @@ float Data_UR[22];//接收来自下位机的数据数组
 uint16_t a,b;
 void send_data(void);//串口发送协议函数
 
-ros::Time last_cmdvelcb_time;
+// ros::Time last_cmdvelcb_time;
 bool new_message_received = false;
 
 typedef unsigned char byte;
@@ -78,8 +78,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 //    ROS_INFO("Y_angular: [%g]", msg.angular.y);//
 //    ROS_INFO("Z_angular: [%g]", msg.angular.z);//
 //    ROS_INFO("-------------");
-    printf("\n\nhsdiuifhgkjgiuwhgkjkerhg\n\n\n");
-    last_cmdvelcb_time = ros::Time::now();
+    // last_cmdvelcb_time = ros::Time::now();
     new_message_received = true;
 
     x_mid_speed =msg->linear.x;//将这个值作为X方向的速度目标
@@ -110,14 +109,14 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_B= x_mid_speed; 
 				       speed_C= x_mid_speed; 
 				       speed_D= x_mid_speed; 
-                        printf("i");
+                        // printf("i");
 			        }//前进
        else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle==0){//按下 < 键 
 			               speed_A= x_mid_speed;
 				       speed_B= x_mid_speed; 
 				       speed_C= x_mid_speed; 
 				       speed_D= x_mid_speed;
-                       printf("<");  
+                      //  printf("<");  
 
 			        }//后退
 
@@ -126,7 +125,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_B= -z_mid_angle*0.5F; 
 				       speed_C= -z_mid_angle*0.5F; 
 				       speed_D= z_mid_angle*0.5F;
-                       printf("j");  
+                      //  printf("j");  
 
 			        }//左自传
        else if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle<0){//按下 L 键
@@ -134,7 +133,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_B= -z_mid_angle*0.5F; 
 				       speed_C= -z_mid_angle*0.5F; 
 				       speed_D= z_mid_angle*0.5F;
-                       printf("l");  
+                      //  printf("l");  
 
 			        }//右自传
 
@@ -143,7 +142,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_B= x_mid_speed*0.7F; 
 				       speed_C= x_mid_speed*0.5F; 
 				       speed_D= x_mid_speed*0.95F;
-                       printf("u");  
+                      //  printf("u");  
 
 			        }//左斜上
        else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle<0){//按下 O 键
@@ -151,7 +150,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_A= x_mid_speed*0.7F; 
 				       speed_D= x_mid_speed*0.5F;
 				       speed_C= x_mid_speed*0.95F; 
-                       printf("o");				 
+                      //  printf("o");				 
 
 			        }//右斜上
 	     else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle<0){//按下 M 键
@@ -159,7 +158,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_B= x_mid_speed*0.7F; 
 				       speed_C= x_mid_speed*0.5F; 
 				       speed_D= x_mid_speed*0.95F; 
-                       printf("m"); 
+                      //  printf("m"); 
 
 			        }//左斜下
         else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle>0){//按下 > 键
@@ -167,7 +166,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 				       speed_A= x_mid_speed*0.7F; 
 				       speed_D= x_mid_speed*0.5F;
 				       speed_C= x_mid_speed*0.95F; 
-                       printf(">"); 
+                      //  printf(">"); 
 
 			        }//右斜下
   
@@ -176,7 +175,6 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
         speed_A = 0;
         speed_D = 0;
         speed_C = 0;
-        ROS_INFO("\n\n\ngbligbglibdsiflbzgs\nlirhlrhglvsdjkjvksju\n\n\n\n");
    }
    else {Flag_start=1;FLAG_USART=5;}
 							
@@ -219,7 +217,7 @@ int main(int argc, char **argv){
 
     last_time = ros::Time::now();
 
-    last_cmdvelcb_time = ros::Time::now();
+    // last_cmdvelcb_time = ros::Time::now();
 
 
     //创建timeout
@@ -260,8 +258,6 @@ int main(int argc, char **argv){
     }		
 
    ros::Rate loop_rate(50);//设置循环间隔，即代码执行频率 200 HZ
-
-   bool test = false;
 
    while(ros::ok())
    {
@@ -372,13 +368,11 @@ int main(int argc, char **argv){
 
         ros::spinOnce();//执行回调处理函数，完后继续往下执行
 				
- 			//  count_2++;
 
-            if (new_message_received) printf("zzzzzzzzzzzzzzzzzzzz\n");
-            else if (!new_message_received) ROS_WARN("No new /cmd_vel messages received.");
+            // if (new_message_received) ROS_INFO("New /cmd_vel message received!");
+            // else if (!new_message_received) ROS_WARN("No new /cmd_vel messages received.");
 
 		   if(new_message_received){
-            ROS_INFO("hhhhhhhhhhhhhh\n\n");
             count_2=0;
             
 				 //若接收到键盘控制，则发送数据到下位机，同时接收下位机发送上来的数据		
@@ -400,24 +394,22 @@ int main(int argc, char **argv){
 
                      send_data(); //发送指令控制电机运行
 		    }
-            else if(!new_message_received){
-                // printf("else else else else else\n");
-                // count_2=0;
+            else if(!new_message_received){  //當沒有收到/cmd_vel新的訊息以後，就停止運動
                 count_2++;
                 if(count_2 > 25){
-                /*<01>*/Data_US[0]  = Flag_start;//电机启动开关，1启动 0停止
-                /*<02>*/Data_US[1]  = 0; 
-                /*<03>*/Data_US[2]  = 0; 
-                /*<04>*/Data_US[3]  = 0; 
-                /*<05>*/Data_US[4]  = 0; //ABCD四轮的当前线速度 m/s
-                /*<06>*/Data_US[5]  = 0;//预留位 
-                /*<07>*/Data_US[6]  = 0;//预留位     
-                /*<08>*/Data_US[7]  = 0;//预留位     
-                /*<09>*/Data_US[8]  = 0;//预留位 
-                /*<10>*/Data_US[9]  = 0;//预留位  
-                /*<11>*/Data_US[10] = 0;//预留位 
-                /*<12>*/Data_US[11] = 0;//预留位
-                send_data();
+                  /*<01>*/Data_US[0]  = Flag_start;//电机启动开关，1启动 0停止
+                  /*<02>*/Data_US[1]  = 0; 
+                  /*<03>*/Data_US[2]  = 0; 
+                  /*<04>*/Data_US[3]  = 0; 
+                  /*<05>*/Data_US[4]  = 0; //ABCD四轮的当前线速度 m/s
+                  /*<06>*/Data_US[5]  = 0;//预留位 
+                  /*<07>*/Data_US[6]  = 0;//预留位     
+                  /*<08>*/Data_US[7]  = 0;//预留位     
+                  /*<09>*/Data_US[8]  = 0;//预留位 
+                  /*<10>*/Data_US[9]  = 0;//预留位  
+                  /*<11>*/Data_US[10] = 0;//预留位 
+                  /*<12>*/Data_US[11] = 0;//预留位
+                  send_data();
                 }	
             }
             last_time = current_time;//保存为上次时间
@@ -477,32 +469,32 @@ int main(int argc, char **argv){
 
 		  count_1++;
                   if(count_1>10){//显示频率降低为10HZ
-                    //   count_1=0;
-                    //   if((uint8_t)Data_UR[0]==1){
-                    //       ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: ON");}//下位机电机启动/停止标志，1启动，0停止
-                    //   if((uint8_t)Data_UR[0]==0){
-                    //       ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: OFF");}//下位机电机启动/停止标志，1启动，0停止
+                      count_1=0;
+                      if((uint8_t)Data_UR[0]==1){
+                          ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: ON");}//下位机电机启动/停止标志，1启动，0停止
+                      if((uint8_t)Data_UR[0]==0){
+                          ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: OFF");}//下位机电机启动/停止标志，1启动，0停止
 
-                    //   ROS_INFO("[01] gyro_Roll: [%d ]",  (int)Data_UR[1]); //X轴角速度原始数据 gyro_Roll
-                    //   ROS_INFO("[02] gyro_Pitch: [%d ]", (int)Data_UR[2]); //Y轴角速度原始数据 gyro_Pitch
-                    //   ROS_INFO("[03] gyro_Yaw: [%d ]",   (int)Data_UR[3]); //Z轴角速度原始数据 gyro_Yaw
+                      ROS_INFO("[01] gyro_Roll: [%d ]",  (int)Data_UR[1]); //X轴角速度原始数据 gyro_Roll
+                      ROS_INFO("[02] gyro_Pitch: [%d ]", (int)Data_UR[2]); //Y轴角速度原始数据 gyro_Pitch
+                      ROS_INFO("[03] gyro_Yaw: [%d ]",   (int)Data_UR[3]); //Z轴角速度原始数据 gyro_Yaw
 								
-                    //   ROS_INFO("[04] accel_x: [%d ]",  (int)Data_UR[4]); //X轴加速度原始数据 accel_x
-                    //   ROS_INFO("[05] accel_y: [%d ]",  (int)Data_UR[5]); //Y轴加速度原始数据 accel_x
-                    //   ROS_INFO("[06] accel_z: [%d ]",  (int)Data_UR[6]); //Z轴加速度原始数据 accel_x 				 
+                      ROS_INFO("[04] accel_x: [%d ]",  (int)Data_UR[4]); //X轴加速度原始数据 accel_x
+                      ROS_INFO("[05] accel_y: [%d ]",  (int)Data_UR[5]); //Y轴加速度原始数据 accel_x
+                      ROS_INFO("[06] accel_z: [%d ]",  (int)Data_UR[6]); //Z轴加速度原始数据 accel_x 				 
 
-                    //   ROS_INFO("[07] Yaw: [%.2f deg]",  Data_UR[7]); //Z轴角度 deg
+                      ROS_INFO("[07] Yaw: [%.2f deg]",  Data_UR[7]); //Z轴角度 deg
 													
-                    //   ROS_INFO("[08] Current_linear_A: [%.2f m/s]", +Data_UR[8]); //A轮线速度 m/s
-                    //   ROS_INFO("[09] Current_linear_B: [%.2f m/s]", -Data_UR[9]); //B轮线速度 m/s 
-                    //   ROS_INFO("[10] Current_linear_C: [%.2f m/s]", -Data_UR[10]); //C轮线速度 m/s 
-                    //   ROS_INFO("[11] Current_linear_D: [%.2f m/s]", +Data_UR[11]); //D轮线速度 m/s 	 							
+                      ROS_INFO("[08] Current_linear_A: [%.2f m/s]", +Data_UR[8]); //A轮线速度 m/s
+                      ROS_INFO("[09] Current_linear_B: [%.2f m/s]", -Data_UR[9]); //B轮线速度 m/s 
+                      ROS_INFO("[10] Current_linear_C: [%.2f m/s]", -Data_UR[10]); //C轮线速度 m/s 
+                      ROS_INFO("[11] Current_linear_D: [%.2f m/s]", +Data_UR[11]); //D轮线速度 m/s 	 							
 								
-                    //   ROS_INFO("[12] Voltage: [%.2f V]", Data_UR[12]/100); // 电池电压
-                    //   ROS_INFO("-----------------------"); 
-                    //   ROS_INFO("a: [%d ]",   a);
-                    //   ROS_INFO("b: [%d ]",   b);                       
-											// ROS_INFO("a/b: [%.2f ]",   (float)a/(float)b);
+                      ROS_INFO("[12] Voltage: [%.2f V]", Data_UR[12]/100); // 电池电压
+                      ROS_INFO("-----------------------"); 
+                      ROS_INFO("a: [%d ]",   a);
+                      ROS_INFO("b: [%d ]",   b);                       
+											ROS_INFO("a/b: [%.2f ]",   (float)a/(float)b);
                       if(b>5000)b=b/10,a=a/10;											
                      }					 
 
