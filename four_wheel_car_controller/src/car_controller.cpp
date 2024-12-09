@@ -143,17 +143,17 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 
        else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle>0){//按下 U 键
 			               speed_A= x_mid_speed;
-				       speed_B= x_mid_speed*0.7F; 
-				       speed_C= x_mid_speed*0.5F; 
-				       speed_D= x_mid_speed*0.95F;
+				       speed_B= x_mid_speed*0.8F; //0.7F 
+				       speed_C= x_mid_speed*0.6F; //0.5F
+				       speed_D= x_mid_speed*0.97F;  //0.95F
                       //  printf("u");  
 
 			        }//左斜上
        else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle<0){//按下 O 键
 			               speed_B= x_mid_speed;
-				       speed_A= x_mid_speed*0.7F; 
-				       speed_D= x_mid_speed*0.5F;
-				       speed_C= x_mid_speed*0.95F; 
+				       speed_A= x_mid_speed*0.8F; 
+				       speed_D= x_mid_speed*0.6F;
+				       speed_C= x_mid_speed*0.97F; 
                       //  printf("o");				 
 
 			        }//右斜上
