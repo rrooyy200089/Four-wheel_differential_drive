@@ -110,80 +110,114 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
     if(z_mid_angle > +1.1)z_mid_angle = +1.1;
     if(z_mid_angle < -1.1)z_mid_angle = -1.1;
 
+    if(x_mid_speed == 0){   //自轉和停止
+      speed_A = z_mid_angle*0.5F;
+      speed_B = -z_mid_angle*0.5F;
+      speed_C = -z_mid_angle*0.5F;
+      speed_D = z_mid_angle*0.5F;
+    }
 
-            if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle==0){//按下 I 键 
-			               speed_A= x_mid_speed;
-				       speed_B= x_mid_speed; 
-				       speed_C= x_mid_speed; 
-				       speed_D= x_mid_speed; 
-                        // printf("i");
-			        }//前进
-       else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle==0){//按下 < 键 
-			               speed_A= x_mid_speed;
-				       speed_B= x_mid_speed; 
-				       speed_C= x_mid_speed; 
-				       speed_D= x_mid_speed;
-                      //  printf("<");  
+    else if(z_mid_angle == 0){   //前進和後退
+      speed_A = x_mid_speed;
+      speed_B = x_mid_speed;
+      speed_C = x_mid_speed;
+      speed_D = x_mid_speed;
+    }
 
-			        }//后退
+    else{   //轉彎
+      // speed_A = x_mid_speed + z_mid_angle*0.45F/2.0F - z_mid_angle*0.35F/2.0F;
+      // speed_B = x_mid_speed - z_mid_angle*0.45F/2.0F - z_mid_angle*0.35F/2.0F;
+      // speed_C = x_mid_speed - z_mid_angle*0.45F/2.0F + z_mid_angle*0.35F/2.0F;
+      // speed_D = x_mid_speed + z_mid_angle*0.45F/2.0F + z_mid_angle*0.35F/2.0F;
+      speed_A = x_mid_speed + z_mid_angle*0.4F;
+      speed_B = x_mid_speed - z_mid_angle*0.36F;
+      speed_C = x_mid_speed - z_mid_angle*0.33F;
+      speed_D = x_mid_speed + z_mid_angle*0.37F;
+    }
 
-       else if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle>0){//按下 J 键
-			               speed_A= z_mid_angle*0.5F;
-				       speed_B= -z_mid_angle*0.5F; 
-				       speed_C= -z_mid_angle*0.5F; 
-				       speed_D= z_mid_angle*0.5F;
-                      //  printf("j");  
+    if(x_mid_speed != 0 || z_mid_angle != 0){
+      Flag_start=1;
+      FLAG_USART=5;
+    }
 
-			        }//左自传
-       else if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle<0){//按下 L 键
-			               speed_A= z_mid_angle*0.5F;
-				       speed_B= -z_mid_angle*0.5F; 
-				       speed_C= -z_mid_angle*0.5F; 
-				       speed_D= z_mid_angle*0.5F;
-                      //  printf("l");  
 
-			        }//右自传
+  //           if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle==0){//按下 I 键 
+	// 		               speed_A= x_mid_speed;
+	// 			       speed_B= x_mid_speed; 
+	// 			       speed_C= x_mid_speed; 
+	// 			       speed_D= x_mid_speed; 
+  //                       // printf("i");
+	// 		        }//前进
+  //      else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle==0){//按下 < 键 
+	// 		               speed_A= x_mid_speed;
+	// 			       speed_B= x_mid_speed; 
+	// 			       speed_C= x_mid_speed; 
+	// 			       speed_D= x_mid_speed;
+  //                     //  printf("<");  
 
-       else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle>0){//按下 U 键
-			               speed_A= x_mid_speed*1.1F;
-				       speed_B= x_mid_speed*0.9F; //0.7F 
-				       speed_C= x_mid_speed*0.7F; //0.5F
-				       speed_D= x_mid_speed*1.0F;  //0.95F
-                      //  printf("u");  
+	// 		        }//后退
 
-			        }//左斜上
-       else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle<0){//按下 O 键
-			               speed_B= x_mid_speed*1.1F;
-				       speed_A= x_mid_speed*0.9F; 
-				       speed_D= x_mid_speed*0.7F;
-				       speed_C= x_mid_speed*1.0F; 
-                      //  printf("o");				 
+  //      else if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle>0){//按下 J 键
+	// 		               speed_A= z_mid_angle*0.5F;
+	// 			       speed_B= -z_mid_angle*0.5F; 
+	// 			       speed_C= -z_mid_angle*0.5F; 
+	// 			       speed_D= z_mid_angle*0.5F;
+  //                     //  printf("j");  
 
-			        }//右斜上
-	     else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle<0){//按下 M 键
-			               speed_A= x_mid_speed;
-				       speed_B= x_mid_speed*0.7F; 
-				       speed_C= x_mid_speed*0.5F; 
-				       speed_D= x_mid_speed*0.95F; 
-                      //  printf("m"); 
+	// 		        }//左自传
+  //      else if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle<0){//按下 L 键
+	// 		               speed_A= z_mid_angle*0.5F;
+	// 			       speed_B= -z_mid_angle*0.5F; 
+	// 			       speed_C= -z_mid_angle*0.5F; 
+	// 			       speed_D= z_mid_angle*0.5F;
+  //                     //  printf("l");  
 
-			        }//左斜下
-        else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle>0){//按下 > 键
-			               speed_B= x_mid_speed;
-				       speed_A= x_mid_speed*0.7F; 
-				       speed_D= x_mid_speed*0.5F;
-				       speed_C= x_mid_speed*0.95F; 
-                      //  printf(">"); 
+	// 		        }//右自传
 
-			        }//右斜下
+  //      else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle>0){//按下 U 键
+	// 		               speed_A= x_mid_speed*1.1F;
+	// 			       speed_B= x_mid_speed*0.9F; //0.7F 
+	// 			       speed_C= x_mid_speed*0.7F; //0.5F
+	// 			       speed_D= x_mid_speed*1.0F;  //0.95F
+  //                     //  printf("u");  
+
+	// 		        }//左斜上
+  //      else if(x_mid_speed>0 && z_mid_speed==0 && z_mid_angle<0){//按下 O 键
+	// 		               speed_B= x_mid_speed*1.1F;
+	// 			       speed_A= x_mid_speed*0.9F; 
+	// 			       speed_D= x_mid_speed*0.7F;
+	// 			       speed_C= x_mid_speed*1.0F; 
+  //                     //  printf("o");				 
+
+	// 		        }//右斜上
+	//      else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle<0){//按下 M 键
+	// 		               speed_A= x_mid_speed;
+	// 			       speed_B= x_mid_speed*0.7F; 
+	// 			       speed_C= x_mid_speed*0.5F; 
+	// 			       speed_D= x_mid_speed*0.95F; 
+  //                     //  printf("m"); 
+
+	// 		        }//左斜下
+  //       else if(x_mid_speed<0 && z_mid_speed==0 && z_mid_angle>0){//按下 > 键
+	// 		               speed_B= x_mid_speed;
+	// 			       speed_A= x_mid_speed*0.7F; 
+	// 			       speed_D= x_mid_speed*0.5F;
+	// 			       speed_C= x_mid_speed*0.95F; 
+  //                     //  printf(">"); 
+
+	// 		        }//右斜下
   
-   if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle==0){
-        speed_B = 0;
-        speed_A = 0;
-        speed_D = 0;
-        speed_C = 0;
-   }
-   else {Flag_start=1;FLAG_USART=5;}
+  //  if(x_mid_speed==0 && z_mid_speed==0 && z_mid_angle==0){
+  //       speed_B = 0;
+  //       speed_A = 0;
+  //       speed_D = 0;
+  //       speed_C = 0;
+  //  }
+  //  else {Flag_start=1;FLAG_USART=5;
+  //     ROS_INFO("x_mid_speed = %.2f", x_mid_speed);
+  //     ROS_INFO("z_mid_speed = %.2f", z_mid_speed);
+  //     ROS_INFO("z_mid_angle = %.2f", z_mid_angle);   
+  //  }
 							
 }
 
@@ -507,7 +541,7 @@ int main(int argc, char **argv){
 			/*<14>*///Data_UR[14]; //预留
 
 		  count_1++;
-                  if(count_1>6){//显示频率降低为10HZ
+                  if(count_1>6){//显示频率降低为10HZ，如果不想顯示的話就加上"&& false"就可以了
                       count_1=0;
                       if((uint8_t)Data_UR[0]==1){
                           ROS_INFO("[00] Flag_start: [%u ]", (uint8_t)Data_UR[0]);ROS_INFO("[00] Flag_start: ON");}//下位机电机启动/停止标志，1启动，0停止
