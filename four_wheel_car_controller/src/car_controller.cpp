@@ -386,6 +386,20 @@ int main(int argc, char **argv){
 
        odom.twist.twist.angular.z = vth;
 
+       // 設定共變異數矩陣
+       odom.pose.covariance = {1e-3, 0, 0, 0, 0, 0,
+                              0, 1e-3, 0, 0, 0, 0,
+                              0, 0, 1e6, 0, 0, 0,
+                              0, 0, 0, 1e6, 0, 0,
+                              0, 0, 0, 0, 1e6, 0,
+                              0, 0, 0, 0, 0, 1e3};
+       odom.twist.covariance = {1e-3, 0, 0, 0, 0, 0,
+                                0, 1e-3, 0, 0, 0, 0,
+                                0, 0, 1e6, 0, 0, 0,
+                                0, 0, 0, 1e6, 0, 0,
+                                0, 0, 0, 0, 1e6, 0,
+                                0, 0, 0, 0, 0, 1e3};
+
        //发布消息
        odom_pub.publish(odom);
 
