@@ -87,6 +87,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 //    ROS_INFO("-------------");
     // last_cmdvelcb_time = ros::Time::now();
     new_message_received = true;
+    static float kp = 1.5F;
 
     x_mid_speed =msg->linear.x;//将这个值作为X方向的速度目标
     z_mid_speed =msg->linear.z;//将这个值作为Z旋转时的速度目标
@@ -129,10 +130,10 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
       // speed_B = x_mid_speed - z_mid_angle*0.45F/2.0F - z_mid_angle*0.35F/2.0F;
       // speed_C = x_mid_speed - z_mid_angle*0.45F/2.0F + z_mid_angle*0.35F/2.0F;
       // speed_D = x_mid_speed + z_mid_angle*0.45F/2.0F + z_mid_angle*0.35F/2.0F;
-      speed_A = x_mid_speed + z_mid_angle*0.4F;
-      speed_B = x_mid_speed - z_mid_angle*0.36F;
-      speed_C = x_mid_speed - z_mid_angle*0.33F;
-      speed_D = x_mid_speed + z_mid_angle*0.37F;
+      speed_A = x_mid_speed + z_mid_angle*0.4F*kp;
+      speed_B = x_mid_speed - z_mid_angle*0.36F*kp;
+      speed_C = x_mid_speed - z_mid_angle*0.33F*kp;
+      speed_D = x_mid_speed + z_mid_angle*0.37F*kp;
     }
 
     if(x_mid_speed != 0 || z_mid_angle != 0){
