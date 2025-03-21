@@ -87,7 +87,7 @@ void chatterCallback(const geometry_msgs::Twist::ConstPtr &msg)//获取键盘控
 //    ROS_INFO("-------------");
     // last_cmdvelcb_time = ros::Time::now();
     new_message_received = true;
-    static float kp = 1.5F;
+    static float kp = 1.0F;
 
     x_mid_speed =msg->linear.x;//将这个值作为X方向的速度目标
     z_mid_speed =msg->linear.z;//将这个值作为Z旋转时的速度目标
